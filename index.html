@@ -1,0 +1,1772 @@
+
+<!DOCTYPE html>
+<!-- MOSS ACADEMY: plataforma educacional em arquivo único. -->
+<html lang="pt-BR">
+<head>
+  <!-- Configura os caracteres e a adaptação ao celular. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Identifica a página no navegador. -->
+  <title>MOSS Academy | Curso Front-End</title>
+  <meta name="description" content="Curso de Front-End com 90 aulas práticas de HTML, CSS e JavaScript.">
+
+  <style>
+    /* CORES E CONFIGURAÇÕES GERAIS. */
+    :root {
+      --azul: #14213d; /* Cor principal. */
+      --azul-claro: #22385e; /* Cor de destaque. */
+      --dourado: #d4af37; /* Cor da marca. */
+      --fundo: #f2f5fa; /* Fundo do site. */
+      --branco: #ffffff; /* Fundo dos cartões. */
+      --texto: #263449; /* Cor do texto. */
+      --borda: #dce3ee; /* Cor das bordas. */
+      --verde: #23784b; /* Cor do progresso. */
+    }
+
+    /* Padroniza o tamanho dos elementos. */
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Configura o corpo da página. */
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    /* Mantém a fonte consistente nos controles. */
+    button, input {
+      font: inherit;
+    }
+
+    /* Destaca os controles usados pelo teclado. */
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--dourado);
+      outline-offset: 3px;
+    }
+
+    /* CABEÇALHO. */
+    header {
+      background: linear-gradient(130deg, var(--azul), var(--azul-claro));
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    /* Nome da plataforma. */
+    .marca {
+      color: var(--dourado);
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+
+    /* Título principal. */
+    header h1 {
+      margin: 10px 0;
+      font-size: clamp(26px, 5vw, 42px);
+    }
+
+    /* Subtítulo principal. */
+    header p {
+      margin: 0;
+      color: #e5eaf3;
+    }
+
+    /* LAYOUT DA PLATAFORMA. */
+    .container {
+      max-width: 1350px;
+      margin: 25px auto;
+      padding: 0 15px;
+      display: grid;
+      grid-template-columns: 300px minmax(0, 1fr);
+      gap: 20px;
+    }
+
+    /* MENU LATERAL. */
+    aside {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 15px;
+      padding: 18px;
+      align-self: start;
+      position: sticky;
+      top: 15px;
+      max-height: calc(100vh - 30px);
+      overflow-y: auto;
+    }
+
+    /* Título do menu. */
+    aside h2 {
+      font-size: 20px;
+      margin: 0 0 15px;
+    }
+
+    /* Campo de pesquisa. */
+    #pesquisa {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--borda);
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    /* Botões das aulas. */
+    .botao-aula {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 11px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--texto);
+      cursor: pointer;
+      margin-bottom: 3px;
+    }
+
+    /* Aula selecionada e efeito de passagem. */
+    .botao-aula:hover,
+    .botao-aula.ativo {
+      background: #e9eff9;
+      color: var(--azul);
+      font-weight: bold;
+    }
+
+    /* Indica que uma aula foi concluída. */
+    .botao-aula.concluida::after {
+      content: " ✓";
+      color: var(--verde);
+      font-weight: bold;
+    }
+
+    /* Área de conteúdo. */
+    main {
+      min-width: 0;
+    }
+
+    /* Cartões gerais. */
+    .cartao {
+      background: var(--branco);
+      border: 1px solid var(--borda);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px #14213d09;
+    }
+
+    /* Títulos dos cartões. */
+    .cartao h2 {
+      margin-top: 0;
+      color: var(--azul);
+    }
+
+    /* Barra externa do progresso. */
+    .barra {
+      height: 16px;
+      background: #e1e7f0;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+
+    /* Parte preenchida da barra. */
+    #progresso {
+      width: 0;
+      height: 100%;
+      background: var(--verde);
+      transition: width 0.2s ease;
+    }
+
+    /* Identificação do módulo. */
+    .modulo {
+      display: inline-block;
+      background: #fff3cb;
+      color: #6c5000;
+      padding: 5px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* Título da aula. */
+    #tituloAula {
+      font-size: clamp(23px, 4vw, 32px);
+      margin: 15px 0;
+    }
+
+    /* Divisão das partes da aula. */
+    .secao {
+      border-top: 1px solid var(--borda);
+      padding-top: 18px;
+      margin-top: 18px;
+    }
+
+    /* Títulos internos. */
+    .secao h3 {
+      color: var(--azul);
+      margin: 0 0 10px;
+    }
+
+    /* Blocos de código. */
+    pre {
+      background: #111c30;
+      color: #edf3ff;
+      padding: 18px;
+      border-radius: 10px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    /* Fonte do código. */
+    code {
+      font-family: Consolas, Monaco, monospace;
+      font-size: 14px;
+    }
+
+    /* Botões gerais. */
+    .botao {
+      background: var(--azul);
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      margin: 5px 5px 5px 0;
+      font-weight: bold;
+    }
+
+    /* Efeito visual dos botões. */
+    .botao:hover {
+      background: var(--azul-claro);
+    }
+
+    /* Botão secundário. */
+    .secundario {
+      background: #e5eaf2;
+      color: var(--azul);
+    }
+
+    /* Navegação entre aulas. */
+    .navegacao {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Botões indisponíveis. */
+    button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* Caixa do exercício. */
+    .exercicio {
+      background: #f7f9fc;
+      border-left: 4px solid var(--dourado);
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    /* Rodapé. */
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #58667a;
+    }
+
+    /* Ajustes para celulares e tablets. */
+    @media (max-width: 800px) {
+      .container {
+        display: block;
+      }
+
+      aside {
+        position: static;
+        max-height: 280px;
+        margin-bottom: 20px;
+      }
+
+      .cartao {
+        padding: 18px;
+      }
+    }
+
+    /* Reduz animações quando solicitado pelo usuário. */
+    @media (prefers-reduced-motion: reduce) {
+      #progresso {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- CABEÇALHO DA MOSS ACADEMY. -->
+  <header>
+    <div class="marca">MOSS DIGITAL APRESENTA</div>
+    <h1>MOSS ACADEMY</h1>
+    <p>Desenvolvimento Front-End do Zero • 90 aulas</p>
+    <p>Aprenda HTML, CSS e JavaScript construindo projetos.</p>
+  </header>
+
+  <!-- ESTRUTURA PRINCIPAL. -->
+  <div class="container">
+
+    <!-- MENU DE NAVEGAÇÃO. -->
+    <aside>
+      <h2>📚 Aulas do curso</h2>
+
+      <!-- Pesquisa os títulos e conteúdos das aulas. -->
+      <label for="pesquisa">Pesquisar aula</label>
+      <input
+        id="pesquisa"
+        type="search"
+        placeholder="Ex.: Flexbox, funções..."
+      >
+
+      <!-- O JavaScript cria os 90 botões neste elemento. -->
+      <nav id="listaAulas" aria-label="Lista das aulas"></nav>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL. -->
+    <main>
+
+      <!-- APRESENTAÇÃO DO CURSO. -->
+      <section class="cartao">
+        <h2>Bem-vindo à MOSS Academy!</h2>
+        <p>
+          Este curso apresenta os fundamentos do desenvolvimento
+          Front-End por meio de 90 aulas progressivas.
+        </p>
+        <p>
+          Projeto integrador: <strong>Colégio Horizonte Prime</strong>,
+          um site escolar fictício utilizado para praticar
+          os conhecimentos adquiridos.
+        </p>
+        <p>
+          Cada aula apresenta um objetivo, uma explicação,
+          um exemplo de código, um exercício e uma orientação
+          para o professor.
+        </p>
+      </section>
+
+      <!-- PROGRESSO DO ESTUDANTE. -->
+      <section class="cartao">
+        <h2>Meu progresso</h2>
+
+        <!-- Barra de progresso. -->
+        <div
+          class="barra"
+          id="barraAcessivel"
+          role="progressbar"
+          aria-label="Progresso das aulas"
+          aria-valuemin="0"
+          aria-valuemax="90"
+          aria-valuenow="0"
+        >
+          <div id="progresso"></div>
+        </div>
+
+        <!-- Contador de aulas concluídas. -->
+        <p id="textoProgresso" aria-live="polite">
+          0 de 90 aulas concluídas.
+        </p>
+
+        <!-- Marca a aula atual como concluída. -->
+        <button class="botao" id="concluir">
+          Marcar aula como concluída
+        </button>
+
+        <!-- Limpa o progresso mediante confirmação. -->
+        <button class="botao secundario" id="limpar">
+          Limpar progresso
+        </button>
+      </section>
+
+      <!-- CARTÃO DA AULA SELECIONADA. -->
+      <article class="cartao" id="conteudoAula">
+
+        <!-- Identificação do módulo. -->
+        <span class="modulo" id="moduloAula">
+          Módulo 1
+        </span>
+
+        <!-- Título da aula atual. -->
+        <h2 id="tituloAula">Carregando aula...</h2>
+
+        <!-- Objetivo da aula. -->
+        <section class="secao">
+          <h3>🎯 Objetivo</h3>
+          <p id="objetivoAula"></p>
+        </section>
+
+        <!-- Explicação do conteúdo. -->
+        <section class="secao">
+          <h3>📖 Explicação</h3>
+          <p id="explicacaoAula"></p>
+        </section>
+
+        <!-- Exemplo de código. -->
+        <section class="secao">
+          <h3>💻 Exemplo de código</h3>
+          <pre><code id="codigoAula"></code></pre>
+
+          <!-- Copia o código da aula. -->
+          <button class="botao" id="copiar">
+            Copiar código
+          </button>
+        </section>
+
+        <!-- Exercício proposto. -->
+        <section class="secao">
+          <h3>✍️ Exercício prático</h3>
+          <div class="exercicio" id="exercicioAula"></div>
+        </section>
+
+        <!-- Orientação para o professor. -->
+        <section class="secao">
+          <h3>👨‍🏫 Orientação para o professor</h3>
+          <p id="professorAula"></p>
+        </section>
+
+      </article>
+
+      <!-- NAVEGAÇÃO ENTRE AS AULAS. -->
+      <div class="navegacao">
+        <button class="botao" id="anterior">
+          ← Aula anterior
+        </button>
+
+        <button class="botao" id="proxima">
+          Próxima aula →
+        </button>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- RODAPÉ DA PLATAFORMA. -->
+  <footer>
+    MOSS Academy • Projeto educacional da MOSS Digital
+    <p>Aprender, praticar e construir.</p>
+  </footer>
+
+  <!-- INÍCIO DO JAVASCRIPT. -->
+  <script>
+    "use strict";
+
+    // ==================================================
+    // 1. BASE DE DADOS DAS 90 AULAS
+    // ==================================================
+
+    // Esta função organiza os dados de cada aula.
+    function criarAula(titulo, modulo, objetivo, explicacao, codigo, exercicio, professor) {
+      return {
+        titulo: titulo,
+        modulo: modulo,
+        objetivo: objetivo,
+        explicacao: explicacao,
+        codigo: codigo,
+        exercicio: exercicio,
+        professor: professor
+      };
+    }
+
+    // Array que armazena todas as aulas do curso.
+    const aulas = [
+
+      // MÓDULO 1 — FUNDAMENTOS DE HTML.
+
+      criarAula(
+        "01 — O que é Front-End?",
+        "Módulo 1 • Fundamentos",
+        "Compreender o papel do desenvolvedor Front-End.",
+        "Front-End é a parte de um site com a qual as pessoas interagem. HTML organiza o conteúdo, CSS define a aparência e JavaScript adiciona comportamentos.",
+        "<!-- HTML organiza o conteúdo. -->\n<h1>Meu primeiro site</h1>",
+        "Escreva três exemplos de elementos que você encontra em sites.",
+        "Mostre um site conhecido e identifique conteúdo, estilo e interação."
+      ),
+
+      criarAula(
+        "02 — Estrutura HTML",
+        "Módulo 1 • Fundamentos",
+        "Reconhecer a estrutura básica de uma página.",
+        "O documento HTML começa com uma declaração de tipo e possui os elementos html, head e body. O conteúdo visível fica dentro de body.",
+        "<!DOCTYPE html>\n<html lang=\"pt-BR\">\n<head>\n  <title>Minha página</title>\n</head>\n<body>\n  <h1>Olá!</h1>\n</body>\n</html>",
+        "Crie uma página com o título Meu primeiro projeto.",
+        "Explique a diferença entre head e body."
+      ),
+
+      criarAula(
+        "03 — Idioma da página",
+        "Módulo 1 • Fundamentos",
+        "Definir corretamente o idioma do documento.",
+        "O atributo lang informa o idioma principal da página. Isso ajuda navegadores, leitores de tela e mecanismos de busca.",
+        "<html lang=\"pt-BR\">",
+        "Altere o idioma de um documento HTML para português brasileiro.",
+        "Explique por que a configuração do idioma melhora a acessibilidade."
+      ),
+
+      criarAula(
+        "04 — Codificação UTF-8",
+        "Módulo 1 • Fundamentos",
+        "Entender a codificação de caracteres.",
+        "UTF-8 permite apresentar acentos, cedilha e diversos símbolos corretamente.",
+        "<meta charset=\"UTF-8\">",
+        "Crie uma página que mostre as palavras educação, coração e programação.",
+        "Demonstre o problema de caracteres incorretos em uma página."
+      ),
+
+      criarAula(
+        "05 — Viewport",
+        "Módulo 1 • Fundamentos",
+        "Preparar a página para dispositivos móveis.",
+        "A meta viewport orienta o navegador a usar a largura do dispositivo como referência para o layout.",
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+        "Adicione a meta viewport e visualize a página no celular.",
+        "Compare a apresentação com e sem essa configuração."
+      ),
+
+      criarAula(
+        "06 — Título da página",
+        "Módulo 1 • Fundamentos",
+        "Definir o título mostrado na aba do navegador.",
+        "O elemento title fica dentro de head e identifica a página.",
+        "<title>Colégio Horizonte Prime</title>",
+        "Crie títulos diferentes para as páginas Início e Contato.",
+        "Explique a diferença entre title e h1."
+      ),
+
+      criarAula(
+        "07 — Descrição SEO",
+        "Módulo 1 • Fundamentos",
+        "Conhecer a descrição de uma página.",
+        "A meta description resume o conteúdo e pode ser utilizada pelos mecanismos de busca nos resultados.",
+        "<meta name=\"description\" content=\"Conheça nosso projeto escolar demonstrativo.\">",
+        "Escreva uma descrição objetiva para o site da escola fictícia.",
+        "Discuta por que a descrição deve representar o conteúdo real."
+      ),
+
+      criarAula(
+        "08 — Cor do navegador",
+        "Módulo 1 • Fundamentos",
+        "Configurar a cor de tema do navegador.",
+        "A meta theme-color permite sugerir uma cor para partes da interface de navegadores compatíveis.",
+        "<meta name=\"theme-color\" content=\"#14213d\">",
+        "Teste duas cores diferentes no atributo content.",
+        "Explique que nem todos os navegadores aplicam essa configuração."
+      ),
+
+      criarAula(
+        "09 — Títulos HTML",
+        "Módulo 1 • Fundamentos",
+        "Criar uma hierarquia de títulos.",
+        "Os elementos h1 a h6 representam diferentes níveis de títulos. A hierarquia ajuda na organização do conteúdo.",
+        "<h1>Colégio Horizonte Prime</h1>\n<h2>Ensino Fundamental</h2>\n<h3>Projetos escolares</h3>",
+        "Crie um título principal e dois subtítulos para a escola.",
+        "Oriente a turma a escolher títulos pela hierarquia, não pelo tamanho visual."
+      ),
+
+      criarAula(
+        "10 — Parágrafos",
+        "Módulo 1 • Fundamentos",
+        "Escrever textos estruturados.",
+        "O elemento p representa um parágrafo e deve ser usado para organizar blocos de texto.",
+        "<p>Aprender transforma o futuro.</p>",
+        "Escreva dois parágrafos de apresentação da escola.",
+        "Diferencie um parágrafo de um título."
+      ),
+
+      criarAula(
+        "11 — Links",
+        "Módulo 1 • Fundamentos",
+        "Criar links de navegação.",
+        "O elemento a permite navegar para páginas, seções ou endereços externos. O atributo href define o destino.",
+        "<a href=\"#contato\">Ir para contato</a>",
+        "Crie um link para a seção de contato.",
+        "Mostre a diferença entre links internos e externos."
+      ),
+
+      criarAula(
+        "12 — Imagens",
+        "Módulo 1 • Fundamentos",
+        "Inserir imagens com descrição alternativa.",
+        "O elemento img exibe imagens. O atributo alt fornece uma alternativa textual quando a imagem é informativa.",
+        "<img src=\"escola.jpg\" alt=\"Fachada ilustrativa de uma escola\">",
+        "Insira uma imagem local e escreva um texto alternativo adequado.",
+        "Explique por que imagens decorativas e informativas exigem tratamentos diferentes."
+      ),
+
+      criarAula(
+        "13 — Listas não ordenadas",
+        "Módulo 1 • Fundamentos",
+        "Organizar itens sem sequência obrigatória.",
+        "O elemento ul agrupa itens li quando a ordem não é essencial.",
+        "<ul>\n  <li>Biblioteca</li>\n  <li>Laboratório</li>\n  <li>Quadra</li>\n</ul>",
+        "Crie uma lista de espaços da escola.",
+        "Explique quando usar listas em vez de parágrafos."
+      ),
+
+      criarAula(
+        "14 — Listas ordenadas",
+        "Módulo 1 • Fundamentos",
+        "Representar sequências numeradas.",
+        "O elemento ol é utilizado quando a ordem dos itens importa.",
+        "<ol>\n  <li>Preencher formulário</li>\n  <li>Conferir dados</li>\n  <li>Enviar solicitação</li>\n</ol>",
+        "Escreva uma sequência de três etapas de inscrição fictícia.",
+        "Compare ol com ul."
+      ),
+
+      criarAula(
+        "15 — Elementos semânticos",
+        "Módulo 1 • Fundamentos",
+        "Conhecer a estrutura semântica.",
+        "Elementos como header, nav, main e footer indicam a função das regiões da página.",
+        "<header>Topo</header>\n<nav>Menu</nav>\n<main>Conteúdo</main>\n<footer>Rodapé</footer>",
+        "Organize uma página usando quatro elementos semânticos.",
+        "Explique o significado de cada região."
+      ),
+
+      criarAula(
+        "16 — Seções",
+        "Módulo 1 • Fundamentos",
+        "Dividir o conteúdo em seções.",
+        "O elemento section agrupa um tema específico e normalmente possui um título.",
+        "<section id=\"sobre\">\n  <h2>Sobre a escola</h2>\n  <p>Conheça nossa proposta.</p>\n</section>",
+        "Crie seções para Sobre, Cursos e Contato.",
+        "Mostre a importância dos identificadores únicos."
+      ),
+
+      criarAula(
+        "17 — Artigos",
+        "Módulo 1 • Fundamentos",
+        "Identificar conteúdos independentes.",
+        "O elemento article representa conteúdo que pode fazer sentido separadamente, como uma notícia.",
+        "<article>\n  <h2>Feira de Ciências</h2>\n  <p>Notícia demonstrativa.</p>\n</article>",
+        "Crie uma notícia fictícia para o mural escolar.",
+        "Compare article e section."
+      ),
+
+      criarAula(
+        "18 — Formulários",
+        "Módulo 1 • Fundamentos",
+        "Conhecer a estrutura de um formulário.",
+        "O elemento form agrupa campos e controles. Um formulário visual não envia dados sem uma integração adequada.",
+        "<form>\n  <label for=\"nome\">Nome</label>\n  <input id=\"nome\" name=\"nome\">\n</form>",
+        "Crie um formulário fictício com nome e mensagem.",
+        "Explique a diferença entre interface de formulário e envio real de dados."
+      ),
+
+      criarAula(
+        "19 — Rótulos",
+        "Módulo 1 • Fundamentos",
+        "Relacionar rótulos e campos.",
+        "O atributo for do label deve corresponder ao id do campo. Isso melhora a usabilidade e a acessibilidade.",
+        "<label for=\"email\">E-mail</label>\n<input id=\"email\" type=\"email\">",
+        "Associe corretamente três rótulos aos seus campos.",
+        "Teste o clique sobre o rótulo."
+      ),
+
+      criarAula(
+        "20 — Tipos de input",
+        "Módulo 1 • Fundamentos",
+        "Escolher tipos apropriados de entrada.",
+        "O atributo type ajuda o navegador a oferecer controles adequados para cada informação.",
+        "<input type=\"text\" placeholder=\"Nome\">\n<input type=\"email\" placeholder=\"E-mail\">\n<input type=\"date\">",
+        "Crie campos para nome, e-mail e data.",
+        "Compare os teclados e controles exibidos no celular."
+      ),
+
+      // MÓDULO 2 — CSS.
+
+      criarAula(
+        "21 — Introdução ao CSS",
+        "Módulo 2 • CSS",
+        "Entender a função do CSS.",
+        "CSS controla a apresentação visual dos elementos HTML, incluindo cores, tamanhos, espaçamentos e layouts.",
+        "h1 {\n  color: blue;\n}",
+        "Altere a cor de um título.",
+        "Diferencie estrutura HTML de aparência CSS."
+      ),
+
+      criarAula(
+        "22 — Seletores",
+        "Módulo 2 • CSS",
+        "Selecionar elementos para estilização.",
+        "Seletores indicam quais elementos receberão as propriedades CSS.",
+        "p {\n  color: #333;\n}",
+        "Aplique a mesma cor a todos os parágrafos.",
+        "Explique a relação entre seletor, propriedade e valor."
+      ),
+
+      criarAula(
+        "23 — Classes CSS",
+        "Módulo 2 • CSS",
+        "Criar estilos reutilizáveis.",
+        "Classes permitem aplicar o mesmo estilo a vários elementos. No CSS, uma classe começa com ponto.",
+        ".destaque {\n  color: #d4af37;\n}",
+        "Crie uma classe destaque e aplique em dois elementos.",
+        "Compare classe com seletor de elemento."
+      ),
+
+      criarAula(
+        "24 — Identificadores CSS",
+        "Módulo 2 • CSS",
+        "Estilizar elementos identificados.",
+        "O seletor # corresponde ao atributo id. Identificadores devem ser únicos dentro do documento.",
+        "#contato {\n  background: #f1f5fa;\n}",
+        "Estilize a seção de contato usando um identificador.",
+        "Explique quando preferir classes reutilizáveis."
+      ),
+
+      criarAula(
+        "25 — Cores",
+        "Módulo 2 • CSS",
+        "Aplicar cores com CSS.",
+        "As propriedades color e background-color controlam as cores do texto e do fundo.",
+        "body {\n  color: #263449;\n  background-color: #f2f5fa;\n}",
+        "Escolha uma paleta de três cores para a escola.",
+        "Discuta contraste e legibilidade."
+      ),
+
+      criarAula(
+        "26 — Fontes",
+        "Módulo 2 • CSS",
+        "Configurar a tipografia.",
+        "A propriedade font-family define uma sequência de fontes preferenciais.",
+        "body {\n  font-family: Arial, sans-serif;\n}",
+        "Compare duas famílias de fontes.",
+        "Oriente a escolha de fontes legíveis."
+      ),
+
+      criarAula(
+        "27 — Tamanho do texto",
+        "Módulo 2 • CSS",
+        "Controlar tamanhos de fonte.",
+        "font-size define o tamanho do texto. Unidades relativas, como rem, favorecem a adaptação.",
+        "h1 {\n  font-size: 2rem;\n}",
+        "Ajuste o tamanho do título e dos parágrafos.",
+        "Explique a diferença entre px e rem."
+      ),
+
+      criarAula(
+        "28 — Espaçamento entre linhas",
+        "Módulo 2 • CSS",
+        "Melhorar a leitura de textos.",
+        "line-height controla a distância entre as linhas do texto.",
+        "p {\n  line-height: 1.6;\n}",
+        "Compare parágrafos com diferentes alturas de linha.",
+        "Demonstre como o espaçamento afeta a leitura."
+      ),
+
+      criarAula(
+        "29 — Margens",
+        "Módulo 2 • CSS",
+        "Criar espaços externos.",
+        "margin define o espaço fora da borda de um elemento.",
+        ".cartao {\n  margin: 20px;\n}",
+        "Aplique margens a três cartões.",
+        "Use uma representação visual do modelo de caixa."
+      ),
+
+      criarAula(
+        "30 — Padding",
+        "Módulo 2 • CSS",
+        "Criar espaços internos.",
+        "padding define o espaço entre o conteúdo e a borda do elemento.",
+        ".cartao {\n  padding: 20px;\n}",
+        "Compare cartões com e sem padding.",
+        "Diferencie margin de padding."
+      ),
+
+      criarAula(
+        "31 — Bordas",
+        "Módulo 2 • CSS",
+        "Personalizar bordas.",
+        "border permite definir espessura, estilo e cor das bordas.",
+        ".cartao {\n  border: 1px solid #ddd;\n}",
+        "Crie cartões com bordas discretas.",
+        "Mostre as partes da declaração border."
+      ),
+
+      criarAula(
+        "32 — Cantos arredondados",
+        "Módulo 2 • CSS",
+        "Aplicar arredondamento.",
+        "border-radius controla o arredondamento dos cantos.",
+        ".cartao {\n  border-radius: 12px;\n}",
+        "Crie um botão arredondado.",
+        "Compare diferentes valores de border-radius."
+      ),
+
+      criarAula(
+        "33 — Sombras",
+        "Módulo 2 • CSS",
+        "Adicionar profundidade visual.",
+        "box-shadow cria sombras ao redor de elementos.",
+        ".cartao {\n  box-shadow: 0 4px 12px #0002;\n}",
+        "Aplique uma sombra suave a um cartão.",
+        "Oriente o uso moderado de sombras."
+      ),
+
+      criarAula(
+        "34 — Box sizing",
+        "Módulo 2 • CSS",
+        "Controlar o cálculo das dimensões.",
+        "Com border-box, largura e altura incluem padding e borda.",
+        "* {\n  box-sizing: border-box;\n}",
+        "Compare o tamanho de duas caixas com modelos diferentes.",
+        "Demonstre o cálculo do modelo de caixa."
+      ),
+
+      criarAula(
+        "35 — Display",
+        "Módulo 2 • CSS",
+        "Conhecer modos de exibição.",
+        "display influencia como um elemento participa do layout.",
+        ".menu {\n  display: flex;\n}",
+        "Compare block, inline e flex.",
+        "Mostre exemplos visuais de cada modo."
+      ),
+
+      criarAula(
+        "36 — Flexbox",
+        "Módulo 2 • CSS",
+        "Distribuir elementos em uma direção.",
+        "Flexbox facilita o alinhamento de elementos em linhas ou colunas.",
+        ".linha {\n  display: flex;\n  gap: 16px;\n}",
+        "Crie uma linha com três cartões.",
+        "Explique o eixo principal do Flexbox."
+      ),
+
+      criarAula(
+        "37 — Justify content",
+        "Módulo 2 • CSS",
+        "Distribuir espaço no eixo principal.",
+        "justify-content controla a distribuição dos itens no eixo principal.",
+        ".linha {\n  display: flex;\n  justify-content: space-between;\n}",
+        "Teste center, space-between e space-around.",
+        "Mostre a relação entre direção e eixo principal."
+      ),
+
+      criarAula(
+        "38 — Align items",
+        "Módulo 2 • CSS",
+        "Alinhar itens no eixo transversal.",
+        "align-items controla o alinhamento dos elementos no eixo perpendicular ao principal.",
+        ".linha {\n  display: flex;\n  align-items: center;\n}",
+        "Centralize verticalmente itens com alturas diferentes.",
+        "Compare justify-content e align-items."
+      ),
+
+      criarAula(
+        "39 — Flex wrap",
+        "Módulo 2 • CSS",
+        "Permitir a quebra de linhas.",
+        "flex-wrap permite que os itens ocupem novas linhas quando necessário.",
+        ".linha {\n  display: flex;\n  flex-wrap: wrap;\n}",
+        "Crie uma galeria que quebre linhas em telas estreitas.",
+        "Teste o layout em diferentes larguras."
+      ),
+
+      criarAula(
+        "40 — CSS Grid",
+        "Módulo 2 • CSS",
+        "Criar layouts em linhas e colunas.",
+        "CSS Grid permite organizar elementos em duas dimensões.",
+        ".grade {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  gap: 15px;\n}",
+        "Monte uma grade com seis cartões.",
+        "Compare Grid e Flexbox."
+      ),
+
+      criarAula(
+        "41 — Media queries",
+        "Módulo 2 • CSS",
+        "Adaptar estilos ao tamanho da tela.",
+        "Media queries permitem aplicar regras CSS quando determinadas condições são atendidas.",
+        "@media (max-width: 700px) {\n  .grade {\n    grid-template-columns: 1fr;\n  }\n}",
+        "Transforme uma grade de três colunas em uma coluna no celular.",
+        "Demonstre a importância de testar diferentes larguras."
+      ),
+
+      criarAula(
+        "42 — Imagens responsivas",
+        "Módulo 2 • CSS",
+        "Evitar que imagens ultrapassem seus contêineres.",
+        "max-width limita a largura e height auto preserva a proporção da imagem.",
+        "img {\n  max-width: 100%;\n  height: auto;\n}",
+        "Teste uma imagem grande em uma tela pequena.",
+        "Explique como evitar distorções."
+      ),
+
+      criarAula(
+        "43 — Variáveis CSS",
+        "Módulo 2 • CSS",
+        "Reutilizar valores de estilo.",
+        "Propriedades personalizadas permitem centralizar cores e outros valores.",
+        ":root {\n  --cor-principal: #14213d;\n}\nh1 {\n  color: var(--cor-principal);\n}",
+        "Crie três variáveis de cores.",
+        "Mostre como mudar uma variável altera vários elementos."
+      ),
+
+      criarAula(
+        "44 — Projeto CSS",
+        "Módulo 2 • CSS",
+        "Aplicar os fundamentos de estilização.",
+        "Nesta atividade, a turma combina tipografia, cores, espaçamento, Flexbox e responsividade.",
+        ".cartoes {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 20px;\n}",
+        "Estilize a página inicial fictícia do Colégio Horizonte Prime.",
+        "Avalie organização visual, legibilidade e comportamento no celular."
+      ),
+
+      // MÓDULO 3 — HTML E ACESSIBILIDADE.
+
+      criarAula(
+        "45 — HTML semântico",
+        "Módulo 3 • HTML avançado",
+        "Revisar a estrutura semântica.",
+        "Uma página bem estruturada facilita a navegação, a manutenção e o uso de tecnologias assistivas.",
+        "<header><h1>Escola</h1></header>\n<main><section><h2>Sobre</h2></section></main>\n<footer>Contato</footer>",
+        "Revise a estrutura semântica de uma página.",
+        "Peça aos alunos que justifiquem a escolha de cada elemento."
+      ),
+
+      criarAula(
+        "46 — Navegação acessível",
+        "Módulo 3 • HTML avançado",
+        "Criar menus compreensíveis.",
+        "O elemento nav identifica uma região de navegação. Links devem ter textos claros.",
+        "<nav aria-label=\"Menu principal\">\n  <a href=\"#sobre\">Sobre a escola</a>\n</nav>",
+        "Monte um menu com três links internos.",
+        "Teste a navegação com a tecla Tab."
+      ),
+
+      criarAula(
+        "47 — Texto alternativo",
+        "Módulo 3 • HTML avançado",
+        "Escrever descrições úteis para imagens.",
+        "O texto alternativo deve transmitir a informação relevante da imagem. Imagens puramente decorativas podem usar alt vazio.",
+        "<img src=\"biblioteca.jpg\" alt=\"Estantes de livros na biblioteca escolar\">",
+        "Escreva textos alternativos para três imagens informativas.",
+        "Evite descrições genéricas como imagem bonita."
+      ),
+
+      criarAula(
+        "48 — Formulários acessíveis",
+        "Módulo 3 • HTML avançado",
+        "Construir formulários compreensíveis.",
+        "Campos devem ter rótulos claros e instruções apropriadas.",
+        "<label for=\"responsavel\">Responsável</label>\n<input id=\"responsavel\" name=\"responsavel\" required>",
+        "Crie um formulário demonstrativo com dois campos.",
+        "Explique a função de required e label."
+      ),
+
+      criarAula(
+        "49 — Tipos de entrada",
+        "Módulo 3 • HTML avançado",
+        "Utilizar controles adequados.",
+        "Cada tipo de input oferece comportamentos específicos e pode melhorar a experiência no celular.",
+        "<input type=\"email\" aria-label=\"E-mail\">\n<input type=\"tel\" aria-label=\"Telefone\">",
+        "Compare os campos email, tel e date.",
+        "Demonstre que o tipo de campo não substitui a validação no servidor."
+      ),
+
+      criarAula(
+        "50 — Botões",
+        "Módulo 3 • HTML avançado",
+        "Diferenciar botões e links.",
+        "Botões executam ações; links normalmente levam a outro endereço ou seção.",
+        "<button type=\"button\">Abrir informações</button>",
+        "Crie um botão de ação e um link de navegação.",
+        "Discuta quando usar cada elemento."
+      ),
+
+      criarAula(
+        "51 — Tabelas",
+        "Módulo 3 • HTML avançado",
+        "Organizar dados tabulares.",
+        "Tabelas devem ser usadas para dados relacionados em linhas e colunas, não para montar o layout da página.",
+        "<table>\n  <tr><th>Turma</th><th>Turno</th></tr>\n  <tr><td>6º ano</td><td>Manhã</td></tr>\n</table>",
+        "Crie uma tabela fictícia de turmas e turnos.",
+        "Explique a função dos cabeçalhos th."
+      ),
+
+      // MÓDULO 4 — CSS AVANÇADO.
+
+      criarAula(
+        "52 — Seletores CSS",
+        "Módulo 4 • CSS avançado",
+        "Combinar seletores de forma consciente.",
+        "Seletores podem atingir elementos por classe, identificador, atributo e relacionamento.",
+        ".cartao p {\n  color: #333;\n}",
+        "Estilize somente os parágrafos dentro de cartões.",
+        "Explique o significado do espaço entre os seletores."
+      ),
+
+      criarAula(
+        "53 — Cascata CSS",
+        "Módulo 4 • CSS avançado",
+        "Compreender conflitos entre estilos.",
+        "A cascata considera origem, importância, especificidade e ordem das declarações.",
+        "p { color: blue; }\np { color: green; }",
+        "Descubra qual cor prevalece e explique o motivo.",
+        "Apresente exemplos simples antes de abordar regras mais complexas."
+      ),
+
+      criarAula(
+        "54 — Tipografia",
+        "Módulo 4 • CSS avançado",
+        "Criar hierarquia tipográfica.",
+        "Tamanho, peso, altura de linha e espaçamento ajudam a diferenciar títulos e textos.",
+        "h1 {\n  font-size: 2.5rem;\n  line-height: 1.2;\n}",
+        "Crie uma hierarquia para h1, h2 e parágrafos.",
+        "Avalie legibilidade no celular."
+      ),
+
+      criarAula(
+        "55 — Unidades CSS",
+        "Módulo 4 • CSS avançado",
+        "Comparar unidades de medida.",
+        "px, rem, %, vw e outras unidades são utilizadas em contextos diferentes.",
+        ".conteudo {\n  width: 90%;\n  max-width: 1100px;\n}",
+        "Crie um contêiner fluido com largura máxima.",
+        "Explique por que medidas flexíveis ajudam no design responsivo."
+      ),
+
+      criarAula(
+        "56 — Espaçamentos",
+        "Módulo 4 • CSS avançado",
+        "Criar consistência visual.",
+        "Uma escala de espaçamentos evita valores aleatórios e facilita a manutenção.",
+        ":root {\n  --espaco: 16px;\n}\n.cartao { padding: var(--espaco); }",
+        "Defina uma escala de espaçamentos para o site.",
+        "Mostre como padrões tornam o design mais consistente."
+      ),
+
+      criarAula(
+        "57 — Flexbox na prática",
+        "Módulo 4 • CSS avançado",
+        "Construir uma barra de navegação.",
+        "Flexbox é útil para distribuir logotipo, links e ações em uma mesma linha.",
+        ".topo {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}",
+        "Crie um cabeçalho com logotipo e menu.",
+        "Teste o comportamento em telas estreitas."
+      ),
+
+      criarAula(
+        "58 — Flexbox responsivo",
+        "Módulo 4 • CSS avançado",
+        "Criar cartões flexíveis.",
+        "flex-wrap e flex permitem que elementos se reorganizem conforme o espaço disponível.",
+        ".cartao {\n  flex: 1 1 240px;\n}",
+        "Crie três cartões que se reorganizem automaticamente.",
+        "Explique a base flexível de 240 pixels."
+      ),
+
+      criarAula(
+        "59 — Grid responsivo",
+        "Módulo 4 • CSS avançado",
+        "Criar grades adaptáveis.",
+        "auto-fit e minmax permitem ajustar a quantidade de colunas ao espaço disponível.",
+        ".grade {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));\n}",
+        "Monte uma galeria de seis cartões.",
+        "Compare a solução com uma grade de colunas fixas."
+      ),
+
+      criarAula(
+        "60 — Media queries",
+        "Módulo 4 • CSS avançado",
+        "Adaptar a interface por condições.",
+        "Media queries permitem alterar estilos conforme características da tela ou preferências do usuário.",
+        "@media (max-width: 600px) {\n  nav { display: block; }\n}",
+        "Adapte um menu para uma tela estreita.",
+        "Evite escolher pontos de quebra apenas por modelos de aparelhos."
+      ),
+
+      criarAula(
+        "61 — Imagens e object-fit",
+        "Módulo 4 • CSS avançado",
+        "Controlar o enquadramento das imagens.",
+        "object-fit define como uma imagem se ajusta à área disponível.",
+        ".foto {\n  width: 100%;\n  height: 220px;\n  object-fit: cover;\n}",
+        "Crie cartões com imagens de tamanhos diferentes.",
+        "Compare cover e contain."
+      ),
+
+      criarAula(
+        "62 — Estados interativos",
+        "Módulo 4 • CSS avançado",
+        "Estilizar interações.",
+        "Pseudo-classes como hover e focus-visible permitem oferecer respostas visuais.",
+        "button:hover { background: #22385e; }\nbutton:focus-visible { outline: 3px solid gold; }",
+        "Crie estados de mouse e teclado para um botão.",
+        "Demonstre por que foco visível é importante."
+      ),
+
+      criarAula(
+        "63 — Transições",
+        "Módulo 4 • CSS avançado",
+        "Aplicar movimentos discretos.",
+        "transition suaviza alterações de propriedades CSS. Animações não devem dificultar o uso da página.",
+        "button {\n  transition: background 0.2s ease;\n}",
+        "Adicione uma transição a um botão.",
+        "Compare a experiência com e sem transição."
+      ),
+
+      criarAula(
+        "64 — Tema com variáveis",
+        "Módulo 4 • CSS avançado",
+        "Centralizar a identidade visual.",
+        "Variáveis CSS permitem alterar cores e estilos de vários componentes a partir de um único lugar.",
+        ":root { --primaria: #14213d; }\nheader { background: var(--primaria); }",
+        "Crie duas paletas para o site escolar.",
+        "Mostre como documentar as cores para futuras personalizações."
+      ),
+
+      // MÓDULO 5 — JAVASCRIPT.
+
+      criarAula(
+        "65 — Introdução ao JavaScript",
+        "Módulo 5 • JavaScript",
+        "Compreender a função do JavaScript.",
+        "JavaScript permite criar comportamentos dinâmicos e responder às ações do usuário.",
+        "console.log('Olá, MOSS Academy!');",
+        "Exiba uma mensagem no console do navegador.",
+        "Explique a diferença entre conteúdo, estilo e comportamento."
+      ),
+
+      criarAula(
+        "66 — Variáveis",
+        "Módulo 5 • JavaScript",
+        "Armazenar informações.",
+        "const declara uma referência que não pode ser reatribuída. let permite reatribuição.",
+        "const escola = 'Horizonte Prime';\nlet alunos = 100;\nalunos = 101;",
+        "Crie variáveis para nome de escola e quantidade de turmas.",
+        "Compare const e let."
+      ),
+
+      criarAula(
+        "67 — Tipos de dados",
+        "Módulo 5 • JavaScript",
+        "Reconhecer valores de tipos diferentes.",
+        "JavaScript trabalha com strings, números, booleanos e outros tipos.",
+        "const nome = 'Ana';\nconst idade = 15;\nconst ativo = true;",
+        "Crie um exemplo de string, número e booleano.",
+        "Demonstre o uso de typeof."
+      ),
+
+      criarAula(
+        "68 — Operadores",
+        "Módulo 5 • JavaScript",
+        "Realizar operações e comparações.",
+        "Operadores aritméticos calculam valores; operadores de comparação produzem resultados booleanos.",
+        "const soma = 10 + 5;\nconst aprovado = soma >= 12;",
+        "Crie três operações matemáticas.",
+        "Explique a diferença entre = e ===."
+      ),
+
+      criarAula(
+        "69 — Condições",
+        "Módulo 5 • JavaScript",
+        "Executar ações conforme uma condição.",
+        "if e else permitem escolher entre diferentes caminhos de execução.",
+        "const inscricaoAberta = true;\nif (inscricaoAberta) {\n  console.log('Inscrições abertas');\n} else {\n  console.log('Inscrições encerradas');\n}",
+        "Crie uma condição para exibir o estado de uma inscrição fictícia.",
+        "Peça aos alunos que testem valores true e false."
+      ),
+
+      criarAula(
+        "70 — Arrays",
+        "Módulo 5 • JavaScript",
+        "Organizar listas de dados.",
+        "Um array armazena uma sequência de valores. Seus índices começam em zero.",
+        "const cursos = ['Fundamental I', 'Fundamental II', 'Ensino Médio'];\nconsole.log(cursos[0]);",
+        "Crie uma lista de cinco disciplinas.",
+        "Explique o índice zero."
+      ),
+
+      criarAula(
+        "71 — Objetos",
+        "Módulo 5 • JavaScript",
+        "Agrupar propriedades relacionadas.",
+        "Objetos representam conjuntos de informações identificadas por propriedades.",
+        "const curso = {\n  nome: 'Front-End',\n  aulas: 90\n};\nconsole.log(curso.nome);",
+        "Crie um objeto representando um livro.",
+        "Compare objetos e arrays."
+      ),
+
+      criarAula(
+        "72 — Funções",
+        "Módulo 5 • JavaScript",
+        "Criar blocos reutilizáveis de código.",
+        "Funções agrupam instruções e podem receber parâmetros e retornar resultados.",
+        "function saudacao(nome) {\n  return 'Olá, ' + nome;\n}\nconsole.log(saudacao('Ana'));",
+        "Crie uma função que receba o nome de um aluno.",
+        "Explique parâmetro e retorno."
+      ),
+
+      criarAula(
+        "73 — Arrow functions",
+        "Módulo 5 • JavaScript",
+        "Conhecer outra sintaxe de funções.",
+        "Arrow functions são uma forma concisa de declarar funções e possuem diferenças no comportamento de this.",
+        "const dobro = numero => numero * 2;\nconsole.log(dobro(5));",
+        "Reescreva uma função simples usando arrow function.",
+        "Mostre primeiro a equivalência em casos básicos."
+      ),
+
+      criarAula(
+        "74 — Laços",
+        "Módulo 5 • JavaScript",
+        "Repetir instruções.",
+        "Laços permitem executar uma ação várias vezes sem repetir manualmente o código.",
+        "for (let i = 1; i <= 5; i++) {\n  console.log(i);\n}",
+        "Exiba os números de 1 a 10.",
+        "Explique inicialização, condição e incremento."
+      ),
+
+      criarAula(
+        "75 — DOM",
+        "Módulo 5 • JavaScript",
+        "Acessar elementos HTML.",
+        "O DOM representa a estrutura da página e permite que JavaScript consulte e altere elementos.",
+        "const titulo = document.querySelector('h1');\nconsole.log(titulo);",
+        "Selecione um título da página pelo JavaScript.",
+        "Mostre como HTML e JavaScript se conectam."
+      ),
+
+      criarAula(
+        "76 — textContent",
+        "Módulo 5 • JavaScript",
+        "Alterar textos na página.",
+        "textContent permite definir o conteúdo textual de um elemento sem interpretar HTML.",
+        "document.querySelector('h1').textContent = 'Bem-vindo!';",
+        "Crie um botão que altere um título.",
+        "Explique por que textContent é apropriado para texto simples."
+      ),
+
+      criarAula(
+        "77 — Eventos",
+        "Módulo 5 • JavaScript",
+        "Responder a interações do usuário.",
+        "addEventListener registra uma função para responder a um evento.",
+        "document.querySelector('button').addEventListener('click', () => {\n  alert('Botão clicado!');\n});",
+        "Crie um botão que exiba uma mensagem.",
+        "Explique evento, função e callback."
+      ),
+
+      criarAula(
+        "78 — Formulários com JS",
+        "Módulo 5 • JavaScript",
+        "Ler informações de campos.",
+        "O JavaScript pode consultar valores de campos e executar ações sem recarregar a página.",
+        "const nome = document.querySelector('#nome').value;\nconsole.log(nome);",
+        "Leia o valor de um campo de nome após clicar em um botão.",
+        "Explique a importância de selecionar elementos existentes."
+      ),
+
+      criarAula(
+        "79 — Validação",
+        "Módulo 5 • JavaScript",
+        "Verificar informações antes de uma ação.",
+        "Validação ajuda a identificar entradas incorretas, mas validação no navegador não substitui verificações no servidor.",
+        "const nome = 'Ana';\nif (nome.trim().length === 0) {\n  console.log('Informe seu nome');\n}",
+        "Valide se um campo está vazio.",
+        "Explique a diferença entre validação e segurança."
+      ),
+
+      criarAula(
+        "80 — Filtros",
+        "Módulo 5 • JavaScript",
+        "Selecionar itens de uma lista.",
+        "O método filter cria um novo array contendo os elementos que atendem a uma condição.",
+        "const notas = [5, 7, 9];\nconst maiores = notas.filter(nota => nota >= 7);\nconsole.log(maiores);",
+        "Filtre uma lista de números maiores que dez.",
+        "Demonstre que o array original permanece disponível."
+      ),
+
+      criarAula(
+        "81 — localStorage",
+        "Módulo 5 • JavaScript",
+        "Guardar preferências no navegador.",
+        "localStorage permite armazenar pequenas informações no navegador. Não é apropriado para senhas ou dados sensíveis.",
+        "localStorage.setItem('tema', 'escuro');\nconsole.log(localStorage.getItem('tema'));",
+        "Salve e recupere uma preferência de cor.",
+        "Explique que os dados podem ser apagados pelo usuário."
+      ),
+
+      criarAula(
+        "82 — JSON",
+        "Módulo 5 • JavaScript",
+        "Converter dados para um formato textual.",
+        "JSON é um formato comum de troca de dados. JSON.stringify converte valores e JSON.parse interpreta textos JSON.",
+        "const aluno = { nome: 'Ana' };\nconst texto = JSON.stringify(aluno);\nconsole.log(JSON.parse(texto));",
+        "Converta um objeto simples em JSON e depois recupere-o.",
+        "Explique a diferença entre objeto JavaScript e texto JSON."
+      ),
+
+      criarAula(
+        "83 — Promises",
+        "Módulo 5 • JavaScript",
+        "Conhecer operações assíncronas.",
+        "Uma Promise representa uma operação que pode ser concluída ou rejeitada no futuro.",
+        "Promise.resolve('Concluído').then(resultado => {\n  console.log(resultado);\n});",
+        "Crie uma Promise resolvida com uma mensagem.",
+        "Explique os estados de uma Promise."
+      ),
+
+      criarAula(
+        "84 — Fetch API",
+        "Módulo 5 • JavaScript",
+        "Conhecer requisições HTTP.",
+        "fetch realiza requisições de rede. É necessário verificar a resposta e tratar possíveis falhas.",
+        "async function carregar() {\n  try {\n    const resposta = await fetch('dados.json');\n    if (!resposta.ok) throw new Error('Falha HTTP');\n    const dados = await resposta.json();\n    console.log(dados);\n  } catch (erro) {\n    console.error(erro);\n  }\n}",
+        "Explique o que seria necessário para carregar um arquivo dados.json.",
+        "Demonstre o exemplo em um servidor local, pois arquivos locais podem ter restrições."
+      ),
+
+      // MÓDULO 6 — PROJETO FINAL.
+
+      criarAula(
+        "85 — Tratamento de erros",
+        "Módulo 6 • Projeto profissional",
+        "Identificar e tratar falhas.",
+        "try e catch permitem capturar erros de execução em determinadas operações.",
+        "try {\n  JSON.parse('{invalido}');\n} catch (erro) {\n  console.log('Não foi possível ler os dados.');\n}",
+        "Teste a leitura de um JSON inválido.",
+        "Explique por que mensagens de erro devem ser compreensíveis."
+      ),
+
+      criarAula(
+        "86 — Organização do código",
+        "Módulo 6 • Projeto profissional",
+        "Escrever código legível e reutilizável.",
+        "Nomes claros, funções pequenas e comentários úteis facilitam a manutenção.",
+        "function mostrarMensagem(texto) {\n  console.log(texto);\n}\nmostrarMensagem('Bem-vindo!');",
+        "Organize um código desformatado e melhore seus nomes.",
+        "Avalie legibilidade e clareza, não apenas funcionamento."
+      ),
+
+      criarAula(
+        "87 — Acessibilidade",
+        "Módulo 6 • Projeto profissional",
+        "Melhorar a experiência de diferentes usuários.",
+        "Acessibilidade envolve estrutura semântica, contraste, navegação por teclado e rótulos compreensíveis.",
+        "<button type=\"button\" aria-label=\"Abrir menu\">☰</button>",
+        "Teste o site utilizando somente o teclado.",
+        "Explique que acessibilidade deve ser considerada desde o início."
+      ),
+
+      criarAula(
+        "88 — Testes",
+        "Módulo 6 • Projeto profissional",
+        "Verificar o funcionamento do site.",
+        "Testes devem cobrir navegação, formulários, responsividade, erros e acessibilidade.",
+        "console.assert(2 + 2 === 4, 'A soma está incorreta');",
+        "Crie uma lista de verificação para o site escolar.",
+        "Incentive testes em celulares e navegadores diferentes."
+      ),
+
+      criarAula(
+        "89 — Publicação",
+        "Módulo 6 • Projeto profissional",
+        "Compreender as etapas de publicação.",
+        "Antes de publicar, é necessário revisar arquivos, caminhos, conteúdo, segurança, licenças e funcionamento.",
+        "<!-- Página inicial normalmente chamada index.html. -->\n<h1>Site pronto para revisão</h1>",
+        "Prepare uma lista dos arquivos necessários para hospedar um site estático.",
+        "Explique a diferença entre testar localmente e publicar na internet."
+      ),
+
+      criarAula(
+        "90 — Projeto final",
+        "Módulo 6 • Projeto profissional",
+        "Integrar HTML, CSS e JavaScript.",
+        "O projeto final consiste em desenvolver uma versão própria do site fictício Colégio Horizonte Prime, aplicando estrutura semântica, responsividade e interatividade.",
+        "<main>\n  <section id=\"sobre\">\n    <h2>Colégio Horizonte Prime</h2>\n    <p>Projeto escolar demonstrativo.</p>\n  </section>\n</main>",
+        "Construa um site escolar com menu, apresentação, segmentos, galeria, contato demonstrativo e uma funcionalidade JavaScript.",
+        "Avalie estrutura HTML, qualidade visual, responsividade, acessibilidade, organização do código e apresentação do projeto."
+      )
+    ];
+
+    // ==================================================
+    // 2. ELEMENTOS DA INTERFACE
+    // ==================================================
+
+    // Guarda os elementos utilizados pelo JavaScript.
+    const listaAulas = document.getElementById("listaAulas");
+    const pesquisa = document.getElementById("pesquisa");
+    const moduloAula = document.getElementById("moduloAula");
+    const tituloAula = document.getElementById("tituloAula");
+    const objetivoAula = document.getElementById("objetivoAula");
+    const explicacaoAula = document.getElementById("explicacaoAula");
+    const codigoAula = document.getElementById("codigoAula");
+    const exercicioAula = document.getElementById("exercicioAula");
+    const professorAula = document.getElementById("professorAula");
+    const textoProgresso = document.getElementById("textoProgresso");
+    const progresso = document.getElementById("progresso");
+    const barraAcessivel = document.getElementById("barraAcessivel");
+    const concluir = document.getElementById("concluir");
+    const limpar = document.getElementById("limpar");
+    const copiar = document.getElementById("copiar");
+    const anterior = document.getElementById("anterior");
+    const proxima = document.getElementById("proxima");
+
+    // Índice da aula selecionada.
+    let aulaAtual = 0;
+
+    // Nome utilizado para salvar o progresso no navegador.
+    const chaveProgresso = "moss-academy-progresso";
+
+    // Array com os índices das aulas concluídas.
+    let concluidas = [];
+
+    // ==================================================
+    // 3. CARREGAMENTO DO PROGRESSO
+    // ==================================================
+
+    // Tenta recuperar o progresso salvo anteriormente.
+    try {
+      // Lê o texto armazenado no navegador.
+      const dadosSalvos = localStorage.getItem(chaveProgresso);
+
+      // Converte o texto JSON em um array.
+      const dados = dadosSalvos ? JSON.parse(dadosSalvos) : [];
+
+      // Aceita apenas índices válidos.
+      if (Array.isArray(dados)) {
+        concluidas = [...new Set(
+          dados.filter(numero =>
+            Number.isInteger(numero) &&
+            numero >= 0 &&
+            numero < aulas.length
+          )
+        )];
+      }
+    } catch (erro) {
+      // Continua normalmente quando o armazenamento falha.
+      concluidas = [];
+      console.warn("Não foi possível recuperar o progresso.");
+    }
+
+    // Salva o progresso atualizado.
+    function salvarProgresso() {
+      try {
+        // Converte o array em texto JSON.
+        localStorage.setItem(
+          chaveProgresso,
+          JSON.stringify(concluidas)
+        );
+      } catch (erro) {
+        // O curso continua funcionando sem armazenamento.
+        console.warn("O progresso não pôde ser salvo.");
+      }
+    }
+
+    // ==================================================
+    // 4. CRIAÇÃO DO MENU
+    // ==================================================
+
+    // Gera um botão para cada aula cadastrada.
+    function criarMenu() {
+      // Limpa o conteúdo anterior.
+      listaAulas.replaceChildren();
+
+      // Percorre todas as aulas.
+      aulas.forEach((aula, indice) => {
+        // Cria um botão HTML.
+        const botao = document.createElement("button");
+
+        // Define o tipo para evitar envios de formulários.
+        botao.type = "button";
+
+        // Adiciona a classe utilizada pelo CSS.
+        botao.className = "botao-aula";
+
+        // Define o texto do botão.
+        botao.textContent = aula.titulo;
+
+        // Guarda o índice para facilitar a identificação.
+        botao.dataset.indice = String(indice);
+
+        // Abre a aula quando o botão é acionado.
+        botao.addEventListener("click", () => {
+          mostrarAula(indice);
+        });
+
+        // Adiciona o botão ao menu.
+        listaAulas.appendChild(botao);
+      });
+    }
+
+    // ==================================================
+    // 5. EXIBIÇÃO DAS AULAS
+    // ==================================================
+
+    // Mostra uma aula pelo seu índice.
+    function mostrarAula(indice) {
+      // Impede índices inexistentes.
+      if (indice < 0 || indice >= aulas.length) {
+        return;
+      }
+
+      // Atualiza o índice da aula selecionada.
+      aulaAtual = indice;
+
+      // Recupera os dados da aula.
+      const aula = aulas[indice];
+
+      // Atualiza o módulo e o título.
+      moduloAula.textContent = aula.modulo;
+      tituloAula.textContent = aula.titulo;
+
+      // Atualiza o objetivo e a explicação.
+      objetivoAula.textContent = aula.objetivo;
+      explicacaoAula.textContent = aula.explicacao;
+
+      // Exibe o exemplo como texto, sem executar o código.
+      codigoAula.textContent = aula.codigo;
+
+      // Atualiza o exercício e a orientação.
+      exercicioAula.textContent = aula.exercicio;
+      professorAula.textContent = aula.professor;
+
+      // Atualiza os estados visuais do menu.
+      document.querySelectorAll(".botao-aula").forEach(botao => {
+        // Identifica o botão correspondente à aula.
+        const indiceBotao = Number(botao.dataset.indice);
+
+        // Destaca a aula selecionada.
+        botao.classList.toggle(
+          "ativo",
+          indiceBotao === aulaAtual
+        );
+
+        // Marca as aulas já concluídas.
+        botao.classList.toggle(
+          "concluida",
+          concluidas.includes(indiceBotao)
+        );
+
+        // Informa a seleção para tecnologias assistivas.
+        if (indiceBotao === aulaAtual) {
+          botao.setAttribute("aria-current", "true");
+        } else {
+          botao.removeAttribute("aria-current");
+        }
+      });
+
+      // Desativa o botão anterior na primeira aula.
+      anterior.disabled = aulaAtual === 0;
+
+      // Desativa o botão próximo na última aula.
+      proxima.disabled = aulaAtual === aulas.length - 1;
+
+      // Atualiza o texto do botão de conclusão.
+      atualizarBotaoConclusao();
+
+      // Mantém o título da aula visível ao navegar.
+      document.getElementById("conteudoAula").scrollIntoView({
+        behavior: "auto",
+        block: "start"
+      });
+    }
+
+    // ==================================================
+    // 6. PESQUISA DE AULAS
+    // ==================================================
+
+    // Normaliza um texto para facilitar a pesquisa.
+    function normalizar(texto) {
+      // Converte para minúsculas e remove acentos.
+      return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    // Executa a pesquisa enquanto o usuário digita.
+    pesquisa.addEventListener("input", () => {
+      // Obtém o texto pesquisado.
+      const termo = normalizar(pesquisa.value.trim());
+
+      // Percorre os botões do menu.
+      document.querySelectorAll(".botao-aula").forEach(botao => {
+        // Identifica a aula relacionada ao botão.
+        const indice = Number(botao.dataset.indice);
+        const aula = aulas[indice];
+
+        // Monta um texto pesquisável.
+        const conteudo = normalizar(
+          aula.titulo + " " +
+          aula.modulo + " " +
+          aula.objetivo + " " +
+          aula.explicacao
+        );
+
+        // Oculta as aulas que não correspondem à busca.
+        botao.hidden = !conteudo.includes(termo);
+      });
+    });
+
+    // ==================================================
+    // 7. CONTROLE DE PROGRESSO
+    // ==================================================
+
+    // Atualiza o texto do botão de conclusão.
+    function atualizarBotaoConclusao() {
+      // Verifica se a aula atual já foi concluída.
+      const concluida = concluidas.includes(aulaAtual);
+
+      // Altera o texto conforme o estado.
+      concluir.textContent = concluida
+        ? "Desmarcar aula concluída"
+        : "Marcar aula como concluída";
+    }
+
+    // Atualiza a barra e o contador de progresso.
+    function atualizarProgresso() {
+      // Conta as aulas concluídas.
+      const total = concluidas.length;
+
+      // Calcula a porcentagem concluída.
+      const porcentagem = (total / aulas.length) * 100;
+
+      // Atualiza a largura da barra.
+      progresso.style.width = porcentagem + "%";
+
+      // Atualiza o contador.
+      textoProgresso.textContent =
+        total + " de " + aulas.length +
+        " aulas concluídas (" +
+        Math.round(porcentagem) + "%).";
+
+      // Atualiza o valor acessível da barra.
+      barraAcessivel.setAttribute(
+        "aria-valuenow",
+        String(total)
+      );
+
+      // Atualiza os símbolos de conclusão no menu.
+      document.querySelectorAll(".botao-aula").forEach(botao => {
+        // Obtém o índice da aula.
+        const indice = Number(botao.dataset.indice);
+
+        // Adiciona ou remove a classe de conclusão.
+        botao.classList.toggle(
+          "concluida",
+          concluidas.includes(indice)
+        );
+      });
+
+      // Atualiza o botão da aula atual.
+      atualizarBotaoConclusao();
+    }
+
+    // Marca ou desmarca a aula selecionada.
+    concluir.addEventListener("click", () => {
+      // Verifica se a aula já foi concluída.
+      if (concluidas.includes(aulaAtual)) {
+        // Remove a aula da lista de concluídas.
+        concluidas = concluidas.filter(
+          indice => indice !== aulaAtual
+        );
+      } else {
+        // Adiciona a aula à lista de concluídas.
+        concluidas.push(aulaAtual);
+      }
+
+      // Salva e atualiza a interface.
+      salvarProgresso();
+      atualizarProgresso();
+    });
+
+    // Limpa todas as aulas concluídas.
+    limpar.addEventListener("click", () => {
+      // Solicita confirmação antes de apagar.
+      const confirmou = confirm(
+        "Deseja apagar todas as marcações de aulas concluídas?"
+      );
+
+      // Cancela a operação quando necessário.
+      if (!confirmou) {
+        return;
+      }
+
+      // Esvazia o array.
+      concluidas = [];
+
+      // Salva e atualiza o progresso.
+      salvarProgresso();
+      atualizarProgresso();
+    });
+
+    // ==================================================
+    // 8. NAVEGAÇÃO ENTRE AULAS
+    // ==================================================
+
+    // Abre a aula anterior.
+    anterior.addEventListener("click", () => {
+      mostrarAula(aulaAtual - 1);
+    });
+
+    // Abre a próxima aula.
+    proxima.addEventListener("click", () => {
+      mostrarAula(aulaAtual + 1);
+    });
+
+    // ==================================================
+    // 9. CÓPIA DOS EXEMPLOS DE CÓDIGO
+    // ==================================================
+
+    // Copia o exemplo da aula selecionada.
+    copiar.addEventListener("click", async () => {
+      // Recupera o código apresentado na aula.
+      const texto = aulas[aulaAtual].codigo;
+
+      try {
+        // Utiliza a API de transferência do navegador.
+        await navigator.clipboard.writeText(texto);
+
+        // Informa que a cópia foi concluída.
+        copiar.textContent = "Código copiado!";
+      } catch (erro) {
+        // Informa quando o navegador bloqueia a cópia.
+        copiar.textContent = "Selecione e copie o código acima";
+      }
+
+      // O botão será restaurado ao trocar de aula.
+    });
+
+    // ==================================================
+    // 10. INICIALIZAÇÃO DA PLATAFORMA
+    // ==================================================
+
+    // Cria o menu com as 90 aulas.
+    criarMenu();
+
+    // Exibe a primeira aula.
+    mostrarAula(0);
+
+    // Atualiza o progresso salvo.
+    atualizarProgresso();
+
+    // Confere a quantidade de aulas cadastradas.
+    console.log(
+      "MOSS Academy carregada com " +
+      aulas.length + " aulas."
+    );
+
+  </script>
+  <!-- FIM DO JAVASCRIPT. -->
+
+</body>
+<!-- FIM DO CONTEÚDO VISÍVEL. -->
+
+</html>
+<!-- FIM DO ARQUIVO HTML COMPLETO. -->
